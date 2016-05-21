@@ -7,6 +7,8 @@ public class Column {
     private byte biomeData[];
 
     private boolean skylight;
+    
+    public Column() {}
 
     public Column(int x, int z, Chunk chunks[]) {
         this(x, z, chunks, null);
