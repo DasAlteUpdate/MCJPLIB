@@ -1,8 +1,27 @@
- version: 2
- jobs:
-   build:
-     docker:
-       - image: circleci/ruby:2.4.1
-     steps:
-       - checkout
-       - run: echo "A first hello"
+version: 2
+jobs:
+  build:
+    
+    working_directory: ~/MCJPLIB
+
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+
+    steps:
+
+      - checkout
+
+      - restore_cache:
+          key: MCJPLIB-{{ checksum "pom.xml" }}
+      
+      - run: mvn dependency:go-offline
+      
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: MCJPLIB-{{ checksum "pom.xml" }}
+      
+      - run: mvn clean package
+
+      - store_artifacts:
+          path: target/MCJPLIB.jar
